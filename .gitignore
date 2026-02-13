@@ -21,8 +21,6 @@ dist/
 # Tailwind / PostCSS
 # ----------------------------
 *.css.map
-tailwind.config.js
-postcss.config.js
 
 # ----------------------------
 # IDE / OS
