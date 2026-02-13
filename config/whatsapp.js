@@ -97,7 +97,7 @@ router.post("/", async (req, res) => {
     shortReply = shortReply
       .replace(/^[#*]+\s?/gm, "- ")
       .replace(/\([^)]+\)/g, "")
-      .replace(/[^\p{L}\p{N}\s.,?!-]/gu, "")
+      .replace(/[^\p{L}\p{M}\p{N}\s.,?!-।]/gu, "")
       .replace(/(\r\n|\r|\n)+/g, "\n")
       .replace(/\s{2,}/g, " ")
       .trim();
