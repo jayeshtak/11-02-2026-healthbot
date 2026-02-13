@@ -7,6 +7,8 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
+import path from "path";
+import { fileURLToPath } from "url";
 
 // ============================
 // Route Handlers
@@ -72,6 +74,22 @@ app.use("/whatsapp", whatsappRoute);
 
 // SMS webhook route (Twilio SMS integration)
 app.use("/sms", smsRoute);
+
+// ============================
+// Serve Frontend Dashboard (Production)
+// ============================
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const dashboardPath = path.join(__dirname, "client", "healthassist-dashboard", "dist");
+
+// Serve static assets from the built dashboard
+app.use("/dashboard", express.static(dashboardPath));
+
+// SPA fallback: serve index.html for any unmatched /dashboard routes
+app.get("/dashboard/{*splat}", (req, res) => {
+  res.sendFile(path.join(dashboardPath, "index.html"));
+});
 
 
 app.use((err, req, res, next) => {

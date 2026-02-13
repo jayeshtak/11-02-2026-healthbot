@@ -8,7 +8,7 @@ import react from "@vitejs/plugin-react"; // Import official React plugin for Vi
 
 // Export the configuration
 export default defineConfig({
-  base: "./", // important for deployment on Vercel
+  base: "/dashboard/", // serves from /dashboard on the Express backend
   plugins: [
     react(), // Enables React support (JSX, Fast Refresh, etc.)
   ],

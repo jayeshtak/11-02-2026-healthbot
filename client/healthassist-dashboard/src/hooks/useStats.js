@@ -21,9 +21,8 @@ export default function useStats() {
     try {
       setLoading(true);
 
-      // Use VITE_BACKEND_URL from root .env
-      const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
-      if (!BACKEND_URL) throw new Error("VITE_BACKEND_URL is missing in .env");
+      // Use VITE_BACKEND_URL from .env, fall back to same origin in production
+      const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "";
 
       // Axios GET request to backend stats endpoint
       const res = await axios.get(`${BACKEND_URL}/stats/advanced`);
