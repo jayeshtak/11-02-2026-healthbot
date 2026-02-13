@@ -148,7 +148,9 @@ try {
     current.totalMessages = (current.totalMessages || 0) + 1;
 
     current.languageDistribution = current.languageDistribution || {};
-    const lang = dialogData?.language || "Unknown";
+    const lang = /[\u0900-\u097F]/.test(shortReply)
+  ? "Hindi"
+  : dialogData?.language || "English";
     current.languageDistribution[lang] =
       (current.languageDistribution[lang] || 0) + 1;
 
