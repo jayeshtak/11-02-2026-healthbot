@@ -9,6 +9,9 @@ import dotenv from "dotenv";
 import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
+import { startVaccinationReminder } from "./utils/vaccinationReminder.js";
+
+import manualReminderRoute from "./routes/manualReminder.js";
 
 // ============================
 // Route Handlers
@@ -25,6 +28,7 @@ import whatsappRoute from "./config/whatsapp.js";
 
 // SMS (Twilio) webhook route
 import smsRoute from "./routes/sms.js";
+
 
 // ============================
 // Environment Configuration
@@ -54,6 +58,9 @@ app.use(express.json());
 // Required for Twilio WhatsApp webhooks and form submissions
 app.use(express.urlencoded({ extended: true }));
 
+app.use("/api", manualReminderRoute);
+
+
 // ============================
 // Routes
 // ============================
@@ -79,17 +86,17 @@ app.use("/sms", smsRoute);
 // Serve Frontend Dashboard (Production)
 // ============================
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const dashboardPath = path.join(__dirname, "client", "healthassist-dashboard", "dist");
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
+// const dashboardPath = path.join(__dirname, "client", "healthassist-dashboard", "dist");
 
-// Serve static assets from the built dashboard
-app.use("/dashboard", express.static(dashboardPath));
+// // Serve static assets from the built dashboard
+// app.use("/dashboard", express.static(dashboardPath));
 
-// SPA fallback: serve index.html for any unmatched /dashboard routes
-app.get("/dashboard/{*splat}", (req, res) => {
-  res.sendFile(path.join(dashboardPath, "index.html"));
-});
+// // SPA fallback: serve index.html for any unmatched /dashboard routes
+// app.get("/dashboard/{*splat}", (req, res) => {
+//   res.sendFile(path.join(dashboardPath, "index.html"));
+// });
 
 
 app.use((err, req, res, next) => {
@@ -105,5 +112,6 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 8080;
 
 app.listen(PORT, () => {
-  console.log(`🚀 HealthAssist running on port ${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
+  startVaccinationReminder();
 });

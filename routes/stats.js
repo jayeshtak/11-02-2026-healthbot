@@ -100,18 +100,24 @@ router.get("/advanced", async (req, res) => {
       : 0;
 
     // ---- Return JSON ----
-    res.json({
-      totalMessages,
-      languageDistribution: toPercentages(langCount, totalMessages),
-      intentDistribution: toPercentages(intentCount, totalMessages),
-      users: {
-        whatsapp: totalWhatsappUsers,
-        sms: totalSmsUsers,
-      },
-      whatsappVoiceText,
-      last24hMessages,
-      avgResponseTimeMs,
-    });
+   const totalLangMessages = Object.values(langCount).reduce(
+  (sum, val) => sum + val,
+  0
+);
+
+res.json({
+  totalMessages,
+  languageDistribution: toPercentages(langCount, totalLangMessages),
+  intentDistribution: toPercentages(intentCount, totalMessages),
+  users: {
+    whatsapp: totalWhatsappUsers,
+    sms: totalSmsUsers,
+  },
+  whatsappVoiceText,
+  last24hMessages,
+  avgResponseTimeMs,
+});
+
   } catch (err) {
     console.error("📊 Advanced Stats Error:", err);
     res.status(500).json({ error: "Failed to fetch advanced stats" });

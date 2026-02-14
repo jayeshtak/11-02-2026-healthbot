@@ -129,6 +129,70 @@ export default function App() {
             />
           </div>
         )}
+
+        {/* Manual Vaccination Reminder Section */}
+<div className="mt-12 p-6 rounded-2xl shadow-lg border border-gray-700 bg-[#1e293b]">
+  <h2 className="text-xl font-semibold mb-4">Manual Vaccination Reminder</h2>
+
+  <div className="grid md:grid-cols-3 gap-4">
+    <input
+      type="text"
+      placeholder="Patient Phone (+91...)"
+      id="phoneInput"
+      className="p-3 rounded-lg bg-[#0f172a] border border-gray-600 focus:outline-none"
+    />
+
+    <input
+      type="text"
+      placeholder="Vaccine Name"
+      id="vaccineInput"
+      className="p-3 rounded-lg bg-[#0f172a] border border-gray-600 focus:outline-none"
+    />
+
+    <button
+onClick={async () => {
+  const phone = document.getElementById("phoneInput").value;
+  const vaccine = document.getElementById("vaccineInput").value;
+
+  if (!phone) {
+    alert("Enter phone number");
+    return;
+  }
+
+  const API_URL = import.meta.env.VITE_API_URL;
+
+  try {
+    const res = await fetch(`${API_URL}/api/manual-reminder`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ phone, vaccine }),
+    });
+
+    const data = await res.json();
+    console.log("Backend Response:", data);
+
+    if (!res.ok) {
+      alert(data.error || "Failed to send reminder");
+      return;
+    }
+
+    alert("Reminder Sent Successfully ✅");
+  } catch (err) {
+    console.error("Fetch Error:", err);
+    alert("Server not reachable");
+  }
+}}
+
+
+      className="bg-blue-600 hover:bg-blue-700 transition rounded-lg p-3 font-medium"
+    >
+      Send Reminder
+    </button>
+  </div>
+</div>
+
       </main>
 
       {/* Footer at the bottom */}
